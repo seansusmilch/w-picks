@@ -12,7 +12,7 @@ export interface NavigationProps {
 }
 
 export const Navigation = ({ className, routes }: NavigationProps) => {
-    const navLinks = routes?.map(route => <Nav.Link href={route.path}>{route.path}</Nav.Link>)
+    const navLinks = routes?.map(route => <Nav.Link key={route.path} href={route.path}>{route.path}</Nav.Link>)
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">

@@ -1,22 +1,28 @@
 import classNames from 'classnames';
 import styles from './picks-table.module.scss';
+import Pick from 'types/Pick';
+import Table from 'react-bootstrap/Table';
+import { PickRow } from './pick-row';
 
 export type PicksTableProps = {
     className?: string;
-    picks: {
+    picks: Pick[];
+};
 
-    }
-}
-
-/**
- * This component was created using Codux's Default new component template.
- * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
- */
-export const PicksTable = ({ className }: PicksTableProps) => {
+export const PicksTable = ({ className, picks }: PicksTableProps) => {
+    const rows = Array(10).fill(0).map((_, i) => <PickRow key={i} />)
     return (
-        <div className={classNames(styles.root, className)}>
-            PicksTable
-            <table />
-        </div>
+        <Table striped bordered hover>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Pick</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows}
+            </tbody>
+        </Table>
     );
 };

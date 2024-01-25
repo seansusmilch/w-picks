@@ -12,7 +12,8 @@ export default defineConfig({
         alias: {
             '@': '/src',
             'components': '/src/components',
-            'routes': '/src/routes'
+            'routes': '/src/routes',
+            'types': '/src/types',
         },
     },
 });
