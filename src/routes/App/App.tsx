@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import { ReactComponent as ReactLogo } from './assets/react.svg';
-import { ReactComponent as ViteLogo } from './assets/vite.svg';
-import { ReactComponent as TypescriptLogo } from './assets/typescript.svg';
-import { ReactComponent as ScssLogo } from './assets/scss.svg';
+import { ReactComponent as ReactLogo } from '@/assets/react.svg';
+import { ReactComponent as ViteLogo } from '@/assets/vite.svg';
+import { ReactComponent as TypescriptLogo } from '@/assets/typescript.svg';
+import { ReactComponent as ScssLogo } from '@/assets/scss.svg';
 import styles from './App.module.scss';
 
 function App() {
@@ -11,6 +11,10 @@ function App() {
 
     return (
         <div className={styles.App}>
+            <nav>
+                <a href="/MatchupInfo">MatchupInfo</a> | <a href="/projects">Projects</a> |{' '}
+                <a href="/about">About</a> | <a href="/contact">Contact Us</a>
+            </nav>
             <div>
                 <a href="https://vitejs.dev" target="_blank">
                     <ViteLogo

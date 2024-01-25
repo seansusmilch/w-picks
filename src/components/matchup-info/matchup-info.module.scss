@@ -1,0 +1,43 @@
+.root {}
+
+.hometeam {}
+
+.awayteam {
+}
+
+.row {}
+
+.container {
+    display: grid;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.col {
+    display: block;
+    text-align: start;
+}
+
+.grid-container {
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+
+.team-logo {}
+
+.matchup-info-container {
+    width: 100%;
+    font-size: 1em;
+}
+
+.versus {
+    align-self: center;
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+}
+
+.team-name {}
