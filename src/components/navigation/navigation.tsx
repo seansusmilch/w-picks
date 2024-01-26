@@ -4,7 +4,7 @@ import classes from './navigation.module.css';
 import { NavLink } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { IconHome, IconMatchstick, IconLogout, IconAtom2 } from '@tabler/icons-react';
+import { IconHome, IconMatchstick, IconLogout, IconAtom2, IconTestPipe } from '@tabler/icons-react';
 
 export interface NavigationProps {
     className?: string;
@@ -16,6 +16,7 @@ export interface NavigationProps {
 const data = [
     { link: '/', label: 'Home', icon: IconHome },
     { link: '/MatchupInfo', label: 'MatchupInfo', icon: IconMatchstick },
+    { link: '/Test', label: 'Test', icon: IconTestPipe },
 ];
 
 export const Navigation = ({ className, routes }: NavigationProps) => {

@@ -6,12 +6,11 @@ import { router, routes } from './routes';
 import { AppShell, Burger, Flex, Grid, Code } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Navigation } from 'components/navigation/navigation';
-import { getAppInfo } from './fire/firebase';
+import { getPicks } from './fire/firebase';
+import { useEffect, useState } from 'react';
 
 export default function App() {
     const [opened, { toggle }] = useDisclosure();
-
-    const appInfo = getAppInfo();
 
     return (
         <MantineProvider theme={theme}>
@@ -63,7 +62,6 @@ export default function App() {
 
                 <AppShell.Main>
                     <Outlet />
-                    {appInfo}
                 </AppShell.Main>
             </AppShell>
         </MantineProvider>

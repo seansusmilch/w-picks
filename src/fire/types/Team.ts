@@ -15,7 +15,6 @@ export type Matchup = {
     picks: Pick[];
     homeTeam: Team;
     awayTeam: Team;
-    date: number; // Date of the game
     matchTimestamp: number;
 }
 
