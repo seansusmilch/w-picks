@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import styles from './picks-table.module.scss';
 import Pick from 'types/Pick';
-import Table from 'react-bootstrap/Table';
 import { PickRow } from './pick-row';
+import { Table, Paper } from '@mantine/core';
 
 export type PicksTableProps = {
     className?: string;
@@ -14,17 +14,17 @@ export const PicksTable = ({ className, picks }: PicksTableProps) => {
         .fill(0)
         .map((_, i) => <PickRow key={i} />);
     return (
-        <div className='table-responsive'>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Pick</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>{rows}</tbody>
+        <>
+            <Table striped highlightOnHover>
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Name</Table.Th>
+                        <Table.Th>Pick</Table.Th>
+                        <Table.Th>Comment</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>{rows}</Table.Tbody>
             </Table>
-        </div>
+        </>
     );
 };

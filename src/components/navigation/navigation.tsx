@@ -28,6 +28,7 @@ export const Navigation = ({ className, routes }: NavigationProps) => {
 
     const links = data.map((item) => (
         <NavLink
+            key={item.link}
             className={classes.link}
             label={item.label}
             leftSection={<item.icon className={classes.linkIcon} stroke={1.5} />}
