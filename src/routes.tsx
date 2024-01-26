@@ -1,23 +1,33 @@
 import {
+    RouteObject,
     createBrowserRouter,
 } from 'react-router-dom'
-import App from 'routes/App/App';
 import {MatchupInfo} from '@/components/matchup-info/matchup-info';
 import {Matchup} from 'routes/Matchup/Matchup';
+import { Navigation } from 'components/navigation/navigation';
+import App from './App';
 
-export const routes = [
+
+export const routes:RouteObject[] = [
     {
         path: '/',
-        element: <App />
+        element: <App />,
+        children: [
+            {
+                path: '/',
+                element: <Matchup />
+            },
+            {
+                path: '/MatchupInfo',
+                element: <MatchupInfo />
+            },
+            {
+                path: '/Profile',
+                element: <Matchup />
+            }
+        ]
     },
-    {
-        path: '/MatchupInfo',
-        element: <MatchupInfo />
-    },
-    {
-        path: '/Matchup',
-        element: <Matchup />
-    }
+    
 ]
 
 export const router = createBrowserRouter(routes);
