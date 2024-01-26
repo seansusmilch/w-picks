@@ -10,19 +10,21 @@ export type PicksTableProps = {
 };
 
 export const PicksTable = ({ className, picks }: PicksTableProps) => {
-    const rows = Array(10).fill(0).map((_, i) => <PickRow key={i} />)
+    const rows = Array(10)
+        .fill(0)
+        .map((_, i) => <PickRow key={i} />);
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Pick</th>
-                    <th>Comment</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </Table>
+        <div className='table-responsive'>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Pick</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </Table>
+        </div>
     );
 };
