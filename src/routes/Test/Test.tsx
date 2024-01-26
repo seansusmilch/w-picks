@@ -23,16 +23,16 @@ export const Test = () => {
     }, []);
 
     return (
-        <Grid>
-            <Grid.Col span={4}>
+        <Grid grow>
+            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
                 <Title>Picks</Title>
                 <Code block>{picksData}</Code>
             </Grid.Col>
-            <Grid.Col span={4}>
+            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
                 <Title>Matchups</Title>
                 <Code block>{matchupsData}</Code>
             </Grid.Col>
-            <Grid.Col span={4}>
+            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
                 <Title>Users</Title>
                 <Code block>{usersData}</Code>
             </Grid.Col>
