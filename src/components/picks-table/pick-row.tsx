@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import styles from './picks-table.module.scss';
-import Pick from 'types/Pick';
+import Pick from '@/types/Pick';
 import { TeamLogo } from 'components/team-logo/team-logo';
 import { Table } from '@mantine/core';
 
