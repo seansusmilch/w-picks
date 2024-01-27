@@ -6,7 +6,6 @@ import { router, routes } from './routes';
 import { AppShell, Burger, Flex, Grid, Code } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Navigation } from 'components/navigation/navigation';
-import { getPicks } from './fire/firebase';
 import { useEffect, useState } from 'react';
 
 export default function App() {
