@@ -1,6 +1,6 @@
-import { getPicks, getMatchups, getUsers } from "@/fire/firebase";
 import { useEffect, useState } from "react";
 import { Code, Title, Grid } from "@mantine/core";
+import { getMatchups, getPicks } from "~/middleware/supabase/matchups";
 
 export const Test = () => {
     const [picksData, updatePicksData] = useState('None yet');
@@ -11,11 +11,10 @@ export const Test = () => {
         const getData = async () => {
             const picks = await getPicks();
             const matchups = await getMatchups();
-            const users = await getUsers();
-
+            
             updatePicksData(JSON.stringify(picks, null, 4));
             updateMatchupsData(JSON.stringify(matchups, null, 4));
-            updateUsersData(JSON.stringify(users, null, 4));
+            // updateUsersData(JSON.stringify(users, null, 4));
             
             console.log('test info updated');
         }

@@ -8,6 +8,7 @@ export type Pick = {
     matchupId: string;
     userId: string;
     timestamp: number;
+    parlayId: string;
     winner: Team;
     comment: string;
 }

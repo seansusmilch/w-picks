@@ -6,8 +6,8 @@ import {MatchupInfo} from '@/components/matchup-info/matchup-info';
 import {Matchup} from 'routes/Matchup/Matchup';
 import {Error} from 'routes/Error/Error';
 import {Test} from 'routes/Test/Test';
-import { Navigation } from 'components/navigation/navigation';
 import App from './App';
+import { AuthenticationForm } from 'routes/Authentication/Authentication';
 
 
 export const routes:RouteObject[] = [
@@ -31,7 +31,11 @@ export const routes:RouteObject[] = [
             {
                 path: '/Test',
                 element: <Test />
-            }
+            },
+            {
+                path: '/Login',
+                element: <AuthenticationForm />
+            },
         ]
     },
     

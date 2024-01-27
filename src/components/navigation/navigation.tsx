@@ -4,7 +4,7 @@ import classes from './navigation.module.css';
 import { NavLink } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { IconHome, IconMatchstick, IconLogout, IconAtom2, IconTestPipe } from '@tabler/icons-react';
+import { IconHome, IconMatchstick, IconLogout, IconAtom2, IconTestPipe, IconLogin } from '@tabler/icons-react';
 
 export interface NavigationProps {
     className?: string;
@@ -17,6 +17,7 @@ const data = [
     { link: '/', label: 'Home', icon: IconHome },
     { link: '/MatchupInfo', label: 'MatchupInfo', icon: IconMatchstick },
     { link: '/Test', label: 'Test', icon: IconTestPipe },
+    { link: '/Login', label: 'Login', icon: IconLogin }
 ];
 
 export const Navigation = ({ className, routes }: NavigationProps) => {
@@ -41,9 +42,26 @@ export const Navigation = ({ className, routes }: NavigationProps) => {
     return (
         <>
             <nav className={classes.navbar}>
-                <div className={classes.navbarMain}>{links}</div>
+                <div className={classes.navbarMain}>{links}
+                <NavLink
+                    component={Link}
+                    to='/Profile'
+                    className={classes.link}
+                    label='Profile'
+                    active={active === '/Profile'}
+                    leftSection={<IconAtom2 />}
+                />
+                </div>
 
                 <div className={classes.footer}>
+                    <NavLink
+                        component={Link}
+                        to='/Login'
+                        className={classes.link}
+                        label='Login/Signup'
+                        active={active === '/Login'}
+                        leftSection={<IconLogin />}
+                    />
                     <a
                         href="#"
                         className={classNames(classes.link, styles.active)}
@@ -52,14 +70,6 @@ export const Navigation = ({ className, routes }: NavigationProps) => {
                         <IconLogout className={classes.linkIcon} stroke={1.5} />
                         <span>Logout</span>
                     </a>
-                    <NavLink
-                        component={Link}
-                        to='/Profile'
-                        className={classes.link}
-                        label='Profile'
-                        active={active === '/Profile'}
-                        leftSection={<IconAtom2 />}
-                    />
                 </div>
             </nav>
         </>
