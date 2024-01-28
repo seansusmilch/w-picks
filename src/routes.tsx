@@ -31,7 +31,7 @@ export const routes:RouteObject[] = [
                 element: <Profile />
             },
             {
-                path: '/Matchup',
+                path: '/Matchup/:id',
                 element: <Matchup />
             },
             {

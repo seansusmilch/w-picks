@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import styles from './matchup-info.module.scss';
 import { TeamLogo } from 'components/team-logo/team-logo';
 import { Grid, Flex, Text, Title } from '@mantine/core';
-import { Matchup, Teams } from '~/types'
+import { MatchupType, Teams } from '~/types'
 
 export interface MatchupInfoProps {
     className?: string;
-    matchup: Matchup;
+    matchup: MatchupType;
 }
 
 export const MatchupInfo = ({ className, matchup}: MatchupInfoProps) => {
@@ -16,29 +16,27 @@ export const MatchupInfo = ({ className, matchup}: MatchupInfoProps) => {
     const awayTeamName = Teams[matchup.away_team].name
 
     return (
-        // <div className={classNames(styles.root, className)}>
-            <Grid>
-                <Grid.Col span={5} className={classNames(styles.awayteam)}>
-                    <TeamLogo team={matchup.away_team} />
-                    <Title visibleFrom='md' size="h2">{awayTeamName}</Title>
-                    <Title hiddenFrom='md' order={4} size="h4">{awayTeamName}</Title>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                    <Flex direction="column" align="center" justify="center" h='100%'>
-                        <Text size="lg" fw={700}>
-                            {gameTime.toLocaleString('en-US', { weekday: 'short' })}
-                        </Text>
-                        <Text size="lg" fw={700}>
-                            {gameTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace(' AM', 'a').replace(' PM', 'p')}
-                        </Text>
-                    </Flex>
-                </Grid.Col>
-                <Grid.Col span={5} className={classNames(styles.hometeam)}>
-                    <TeamLogo team={matchup.home_team} />
-                    <Title visibleFrom='md' size="h2">{homeTeamName}</Title>
-                    <Title hiddenFrom='md' order={4} size="h4">{homeTeamName}</Title>
-                </Grid.Col>
-            </Grid>
-        // </div>
+        <Grid>
+            <Grid.Col span={5} className={classNames(styles.awayteam)}>
+                <TeamLogo team={matchup.away_team} />
+                <Title visibleFrom='md' size="h2">{awayTeamName}</Title>
+                <Title hiddenFrom='md' order={4} size="h4">{awayTeamName}</Title>
+            </Grid.Col>
+            <Grid.Col span={2}>
+                <Flex direction="column" align="center" justify="center" h='100%'>
+                    <Text size="sm" fw={900}>
+                        {gameTime.toLocaleString('en-US', { weekday: 'short' }).toUpperCase()}
+                    </Text>
+                    <Text size="md" fw={700}>
+                        {gameTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace(' AM', 'a').replace(' PM', 'p')}
+                    </Text>
+                </Flex>
+            </Grid.Col>
+            <Grid.Col span={5} className={classNames(styles.hometeam)}>
+                <TeamLogo team={matchup.home_team} />
+                <Title visibleFrom='md' size="h2">{homeTeamName}</Title>
+                <Title hiddenFrom='md' order={4} size="h4">{homeTeamName}</Title>
+            </Grid.Col>
+        </Grid>
     );
 };

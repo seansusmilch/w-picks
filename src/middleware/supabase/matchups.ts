@@ -1,4 +1,5 @@
 import { supa } from './supabaseClient';
+import { MatchupType } from '~/types';
 
 export const getMatchups = async () => {
     const { data, error } = await supa.from('matchups').select();
@@ -22,9 +23,7 @@ export const todaysMatchups = async () => {
 }
 
 export const getMatchupById = async (id: string) => {
-    console.log('getMatchupById not implemented yet, getting first matchup');
-    return (await getMatchups())[0];
-    const { data, error } = await supa.from('matchups').select().eq('id', id);
+    const { data, error } = await supa.from('matchups').select().eq('id', id).single();
     if (error) {
         throw error;
     }

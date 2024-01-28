@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import styles from './picks-table.module.scss';
-import Pick from '@/types/Pick';
+import {PickType} from '~/types';
 import { PickRow } from './pick-row';
-import { Table, Paper } from '@mantine/core';
+import { Table } from '@mantine/core';
 
 export type PicksTableProps = {
     className?: string;
-    picks: Pick[];
+    picks: PickType[];
 };
 
 export const PicksTable = ({ className, picks }: PicksTableProps) => {
