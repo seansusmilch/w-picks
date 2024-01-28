@@ -1,8 +1,9 @@
-import { Code, Title, Grid, Text } from '@mantine/core';
+import { Code, Title, Grid } from '@mantine/core';
 import * as Matchups from '~/middleware/signals/MatchupsSignals';
 import * as Profiles from '~/middleware/signals/ProfilesSignals';
 import * as Auth from '~/middleware/signals/AuthSignals';
 import { useSignals } from '@preact/signals-react/runtime';
+import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 
 export const Test = () => {
     useSignals();
@@ -11,6 +12,10 @@ export const Test = () => {
 
     return (
         <Grid grow>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Title>Elements</Title>
+                <ThemeSwitcher />
+            </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
                 <Title>CurrentUser</Title>
                 <Code block>{JSON.stringify(currentUser, null, 4)}</Code>

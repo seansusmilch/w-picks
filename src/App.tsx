@@ -2,13 +2,17 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { theme } from './theme';
 import { Outlet } from 'react-router-dom';
-import { AppShell, Burger, Flex, Grid, Code, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { AppShell, Burger, Flex, Grid, Title, Image } from '@mantine/core';
+import { useDisclosure, useClickOutside } from '@mantine/hooks';
 import { Navigation } from 'components/navigation/navigation';
-
+import BrandLogo from '~/assets/brand/logo-hires-uncropped.webp';
+import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
+import { useSignals } from '@preact/signals-react/runtime';
 
 export default function App() {
+    useSignals();
     const [opened, { toggle }] = useDisclosure();
+    const clickOutside = useClickOutside(() => opened && toggle());
 
     return (
         <MantineProvider theme={theme}>
@@ -23,7 +27,7 @@ export default function App() {
             >
                 <AppShell.Header>
                     <Grid grow overflow="hidden" h={60}>
-                        <Grid.Col span={9}>
+                        <Grid.Col span={6}>
                             <Flex
                                 h={60}
                                 gap="md"
@@ -31,29 +35,28 @@ export default function App() {
                                 align="center"
                                 direction="row"
                                 wrap="nowrap"
-                                ml={{ xs: 0, sm: 'lg' }}
+                                px="sm"
                             >
+                                <Image src={BrandLogo} mah="48px" radius="md" />
+                                <Title order={2}>W Picks</Title>
+                            </Flex>
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            <Flex h={60} direction="row" px="sm" justify="flex-end" align="center">
                                 <Burger
                                     opened={opened}
                                     onClick={toggle}
                                     hiddenFrom="sm"
-                                    ml="sm"
                                     size="md"
                                 />
-                                <Title order={2}>W Picks</Title>
+                                <ThemeSwitcher visibleFrom="sm" />
                             </Flex>
-                        </Grid.Col>
-                        <Grid.Col span={3}>
-                            <Flex h={60} justify='flex-end' align='center' hiddenFrom='xs'>
-                                <Code mr='sm' fw={700}>v0.0.1</Code>
-                            </Flex>
-                            
                         </Grid.Col>
                     </Grid>
                 </AppShell.Header>
 
                 <AppShell.Navbar p="0">
-                    <Navigation />
+                    <Navigation opened={opened} toggleMethod={toggle} clickOutside={clickOutside}/>
                 </AppShell.Navbar>
 
                 <AppShell.Main>
