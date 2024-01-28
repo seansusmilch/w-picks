@@ -1,4 +1,4 @@
-export type User = {
+export type UserType = {
     id: string;
     displayName: string;
     email?: string;
@@ -12,3 +12,10 @@ export type User = {
         WPicksPercentage: number;
     };
 };
+
+export type DBProfileType = {
+    id: string;
+    created_at: string;
+    display_name: string;
+    avatar_url: string;
+}
