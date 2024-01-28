@@ -1,40 +1,36 @@
-import { useEffect, useState } from "react";
-import { Code, Title, Grid } from "@mantine/core";
-import { getMatchups, getPicks } from "~/middleware/supabase/matchups";
+import { Code, Title, Grid, Text } from '@mantine/core';
+import * as Matchups from '~/middleware/signals/MatchupsSignals';
+import * as Profiles from '~/middleware/signals/ProfilesSignals';
+import * as Auth from '~/middleware/signals/AuthSignals';
+import { useSignals } from '@preact/signals-react/runtime';
 
 export const Test = () => {
-    const [picksData, updatePicksData] = useState('None yet');
-    const [matchupsData, updateMatchupsData] = useState('None yet');
-    const [usersData, updateUsersData] = useState('None yet');
-
-    useEffect(() => {
-        const getData = async () => {
-            const picks = await getPicks();
-            const matchups = await getMatchups();
-            
-            updatePicksData(JSON.stringify(picks, null, 4));
-            updateMatchupsData(JSON.stringify(matchups, null, 4));
-            // updateUsersData(JSON.stringify(users, null, 4));
-            
-            console.log('test info updated');
-        }
-        getData();
-    }, []);
+    useSignals();
+    const currentUser = Auth.currentUserSignal.value;
+    const currentSession = Auth.currentSessionSignal.value;
 
     return (
         <Grid grow>
-            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Title>CurrentUser</Title>
+                <Code block>{JSON.stringify(currentUser, null, 4)}</Code>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Title>CurrentSession</Title>
+                <Code block>{JSON.stringify(currentSession, null, 4)}</Code>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
                 <Title>Picks</Title>
-                <Code block>{picksData}</Code>
+                <Code block>{JSON.stringify(Matchups.picksSignal, null, 4)}</Code>
             </Grid.Col>
-            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
                 <Title>Matchups</Title>
-                <Code block>{matchupsData}</Code>
+                <Code block>{JSON.stringify(Matchups.matchupsSignal, null, 4)}</Code>
             </Grid.Col>
-            <Grid.Col span={{base: 12, md: 6, lg: 4}}>
-                <Title>Users</Title>
-                <Code block>{usersData}</Code>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Title>Profiles</Title>
+                <Code block>{JSON.stringify(Profiles.profiles, null, 4)}</Code>
             </Grid.Col>
         </Grid>
-    )
-}
+    );
+};

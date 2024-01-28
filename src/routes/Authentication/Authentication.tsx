@@ -15,8 +15,11 @@ import {
     Anchor,
     Stack,
 } from '@mantine/core';
+import * as Auth from '~/middleware/signals/AuthSignals';
+import { useNavigate } from 'react-router-dom';
 
 export function AuthenticationForm(props: PaperProps) {
+    const navigate = useNavigate();
     const [type, toggleType] = useToggle(['login', 'register']);
     const form = useForm({
         initialValues: {
@@ -33,21 +36,29 @@ export function AuthenticationForm(props: PaperProps) {
         },
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (type === 'register') {
             signUpNewUser(form.values);
         }
         if (type === 'login') {
-            logInUser(form.values.email, form.values.password);
+            
+            const {user, session, error} = await logInUser(form.values.email, form.values.password);
+            if (error) {
+                console.log('error', error);
+            }
+            console.log('logIn', user, session);
+            Auth.currentSessionSignal.value = session;
+            Auth.currentUserSignal.value = user;
+
+            console.log('Logged in!')
+            navigate('/');
         }
-        const values = form.values;
-        const combined = { type: type, ...values };
-        console.log(JSON.stringify(combined, null, 4));
+
     };
 
     return (
         <Center h='100%'>
-            <Paper maw={400} radius="md" p="xl" withBorder {...props}>
+            <Paper maw={500} radius="md" p="xl" withBorder {...props}>
                 <Text size="lg" fw={500}>
                     Welcome to W Picks, {type} with
                 </Text>

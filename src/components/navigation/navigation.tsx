@@ -1,26 +1,30 @@
 import classNames from 'classnames';
 import styles from './navigation.module.scss';
 import classes from './navigation.module.css';
-import { NavLink } from '@mantine/core';
+import { NavLink, Stack, Image, Group } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { IconHome, IconMatchstick, IconLogout, IconAtom2, IconTestPipe, IconLogin } from '@tabler/icons-react';
-
+import { IconHome, IconAtom2, IconTestPipe, IconLogin, IconCalendar } from '@tabler/icons-react';
+import * as AuthSignals from '~/middleware/signals/AuthSignals';
+import { useSignals } from '@preact/signals-react/runtime';
+import BrandLogo from '~/assets/brand/logo-hires-uncropped.webp'
 export interface NavigationProps {
     className?: string;
     routes?: {
         path: string;
     }[];
+    isLoggedIn?: boolean;
 }
 
 const data = [
     { link: '/', label: 'Home', icon: IconHome },
-    { link: '/MatchupInfo', label: 'MatchupInfo', icon: IconMatchstick },
+    { link: '/Today', label: 'Today', icon: IconCalendar },
     { link: '/Test', label: 'Test', icon: IconTestPipe },
-    { link: '/Login', label: 'Login', icon: IconLogin }
 ];
 
 export const Navigation = ({ className, routes }: NavigationProps) => {
+    useSignals();
+
     const location = useLocation();
     const [active, setActive] = useState(location.pathname);
 
@@ -37,40 +41,49 @@ export const Navigation = ({ className, routes }: NavigationProps) => {
             active={active === item.link}
             component={Link}
             to={item.link}
-        />));
+        />
+    ));
 
     return (
         <>
             <nav className={classes.navbar}>
-                <div className={classes.navbarMain}>{links}
-                <NavLink
-                    component={Link}
-                    to='/Profile'
-                    className={classes.link}
-                    label='Profile'
-                    active={active === '/Profile'}
-                    leftSection={<IconAtom2 />}
-                />
-                </div>
+                <Stack className={classes.navbarMain}>
+                    <Group className={classes.header} p='lg' justify='center'>
+                        <Image src={BrandLogo} maw='250px' radius='xl'/>
+                    </Group>
+                    {links}
+                </Stack>
 
-                <div className={classes.footer}>
+                <Stack className={classes.footer}>
+                    {AuthSignals.currentUserSignal.value ? (
+                        <NavLink
+                            component={Link}
+                            to="/Profile"
+                            className={classes.link}
+                            label="Profile"
+                            active={active === '/Profile'}
+                            leftSection={<IconAtom2 />}
+                        />
+                    ) : (
+                        <NavLink
+                            component={Link}
+                            to="/Login"
+                            className={classes.link}
+                            label="Login/Signup"
+                            active={true}
+                            leftSection={<IconLogin />}
+                        />
+                    )}
+
                     <NavLink
                         component={Link}
-                        to='/Login'
+                        to="/Test"
                         className={classes.link}
-                        label='Login/Signup'
-                        active={active === '/Login'}
-                        leftSection={<IconLogin />}
-                    />
-                    <a
-                        href="#"
-                        className={classNames(classes.link, styles.active)}
-                        onClick={(event) => event.preventDefault()}
-                    >
-                        <IconLogout className={classes.linkIcon} stroke={1.5} />
-                        <span>Logout</span>
-                    </a>
-                </div>
+                        label={AuthSignals.testSignal.value}
+                        active={active === '/Test'}
+                        leftSection={<IconTestPipe />}
+                        />
+                </Stack>
             </nav>
         </>
     );
