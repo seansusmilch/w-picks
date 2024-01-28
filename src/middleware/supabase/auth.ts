@@ -1,13 +1,17 @@
 import { supa } from './supabaseClient';
 
-export const getSession = async ({setSession}:{setSession?: Function, setUser?:Function}) => {
+export const getSession = async () => {
     const {data, error} = await supa.auth.getSession();
+    if (error) console.error('getSession error: ', error)
     const {session} = data;
+    return session;
+}
 
-    if (setSession) {
-        setSession(session);
-        supa.auth.onAuthStateChange((event, session) => setSession(session))
-    }
+export const getUser = async () => {
+    const {data, error} = await supa.auth.getUser();
+    if (error) console.error('getUser error: ', error)
+    const {user} = data;
+    return user;
 }
 
 export const signUpNewUser = async ({email, password, display_name}:{email:string, password:string, display_name:string}) => {
@@ -29,9 +33,8 @@ export const logInUser = async (email: string, password: string) => {
         email: email,
         password: password,
     });
-    if (error) {
-        throw error;
-    }
+
+    return {...data, error};
 }
 
 export const logOutUser = async () => {

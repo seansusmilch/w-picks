@@ -1,13 +1,11 @@
 import Pick from './Pick';
-import {Team} from './Team'
+import { TeamAbbrv } from './Team';
 
 export type Matchup = {
     id: string;
-    picks: Pick[];
-    homeTeam: Team;
-    awayTeam: Team;
-    date: number; // Date of the game
-    matchTimestamp: number;
+    home_team: TeamAbbrv;
+    away_team: TeamAbbrv;
+    matchup_timestamp: string;
 }
 
 export default Matchup;

@@ -12,6 +12,7 @@
     "@mantine/core": "^7.4.2",
     "@mantine/form": "^7.5.0",
     "@mantine/hooks": "^7.4.2",
+    "@preact/signals-react": "^2.0.0",
     "@supabase/supabase-js": "^2.39.3",
     "@tabler/icons-react": "^2.46.0",
     "@types/react-router-dom": "^5.3.3",
