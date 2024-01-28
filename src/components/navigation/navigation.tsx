@@ -58,7 +58,7 @@ export const Navigation = ({ className, routes, opened, toggleMethod }: Navigati
 
     return (
         <>
-            <nav className={classes.navbar}>
+            <div className={classes.navbar}>
                 <Stack className={classes.navbarMain}>
                     <Group className={classes.header} p='lg' justify='center'>
                         <ThemeSwitcher hiddenFrom='sm' />
@@ -90,7 +90,7 @@ export const Navigation = ({ className, routes, opened, toggleMethod }: Navigati
                         />
                     )}
                 </Stack>
-            </nav>
+            </div>
         </>
     );
 };
