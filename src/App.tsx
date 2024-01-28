@@ -27,7 +27,7 @@ export default function App() {
             >
                 <AppShell.Header>
                     <Grid grow overflow="hidden" h={60}>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={7}>
                             <Flex
                                 h={60}
                                 gap="md"
@@ -41,7 +41,7 @@ export default function App() {
                                 <Title order={2}>W Picks</Title>
                             </Flex>
                         </Grid.Col>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={5}>
                             <Flex h={60} direction="row" px="sm" justify="flex-end" align="center">
                                 <Burger
                                     opened={opened}
