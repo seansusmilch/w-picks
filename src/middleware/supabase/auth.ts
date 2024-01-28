@@ -26,6 +26,7 @@ export const signUpNewUser = async ({email, password, display_name}:{email:strin
     });
     console.log('data: ', data);
     console.log('error: ', error);
+    return {...data, error};
 }
 
 export const logInUser = async (email: string, password: string) => {

@@ -16,4 +16,4 @@ effect(() => console.log('currentSessionSignal changed', currentSessionSignal.va
 
 export const testSignal = signal(0);
 setInterval(() => testSignal.value = Math.random(), 500);
-effect(() => console.log('testSignal changed', testSignal.value));
+// effect(() => console.log('testSignal changed', testSignal.value));
