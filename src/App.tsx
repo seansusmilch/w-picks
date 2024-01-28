@@ -1,12 +1,11 @@
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { theme } from './theme';
-import { RouterProvider ,Outlet} from 'react-router-dom';
-import { router, routes } from './routes';
-import { AppShell, Burger, Flex, Grid, Code } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
+import { AppShell, Burger, Flex, Grid, Code, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Navigation } from 'components/navigation/navigation';
-import { useEffect, useState } from 'react';
+
 
 export default function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -41,9 +40,7 @@ export default function App() {
                                     ml="sm"
                                     size="md"
                                 />
-                                <div>
-                                    <h2>W Picks</h2>
-                                </div>
+                                <Title order={2}>W Picks</Title>
                             </Flex>
                         </Grid.Col>
                         <Grid.Col span={3}>
