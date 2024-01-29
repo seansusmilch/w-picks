@@ -1,13 +1,16 @@
 import { Card, Avatar, Text, Group, Button } from '@mantine/core';
 import classes from './user-card.module.css';
+import { currentUserSignal } from '~/middleware/signals/AuthSignals';
+import { minidenticon } from 'minidenticons';
+import { ProfileType } from '~/types';
+import { upsertProfile } from '~/middleware/supabase/profiles';
 
-const stats = [
-    { value: '34K', label: 'Followers' },
-    { value: '187', label: 'Follows' },
-    { value: '1.6K', label: 'Posts' },
-];
+export type UserCardProps = {
+    profile: ProfileType;
+    stats: {value: string; label: string}[];
+}
 
-export function UserCard() {
+export function UserCard({ profile, stats }: UserCardProps) {
     const items = stats.map((stat) => (
         <div key={stat.label}>
             <Text ta="center" fz="lg" fw={500}>
@@ -29,7 +32,8 @@ export function UserCard() {
                 }}
             />
             <Avatar
-                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png"
+                src={profile.avatar_url || 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png'}
+                bg='black'
                 size={80}
                 radius={80}
                 mx="auto"
@@ -37,10 +41,10 @@ export function UserCard() {
                 className={classes.avatar}
             />
             <Text ta="center" fz="lg" fw={500} mt="sm">
-                Bill Headbanger
+                {profile.display_name}
             </Text>
             <Text ta="center" fz="sm" c="dimmed">
-                Fullstack engineer
+                Pro gambler
             </Text>
             <Group mt="md" justify="center" gap={30}>
                 {items}

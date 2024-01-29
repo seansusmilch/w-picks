@@ -7,7 +7,8 @@ export type ErrorMessageProps = {
     message: string;
     returnTo: string;
     icon: JSX.Element;
-}
+    btnLabel: string;
+};
 
 const imgs = [
     'https://media.tenor.com/-iiMZcIHkE8AAAAM/sad-emoji.gif',
@@ -19,40 +20,36 @@ const imgs = [
     'https://thumbs.dreamstime.com/b/worry-emoticon-worried-sad-emoji-resting-his-face-hand-looking-up-203072148.jpg',
 ];
 
-export const ErrorMessage = ({title, message, returnTo, icon}:ErrorMessageProps) => {
+export const ErrorMessage = ({ title, message, returnTo, icon, btnLabel }: ErrorMessageProps) => {
     const img = imgs[Math.floor(Math.random() * imgs.length)];
     return (
-        <Paper ta='center' p="md" shadow="xl">
-            <Title ta="center" order={1}>
+        <Paper ta='center' p='md' shadow='xl'>
+            <Title ta='center' order={1}>
                 {title}
             </Title>
-            <Text ta="center" mt="md">
+            <Text ta='center' mt='md'>
                 {message}
             </Text>
 
-            <Button
-                component={Link}
-                to={returnTo}
-
-                leftSection={icon}
-                mt="xl"
-                variant='light'
-                >Go Home</Button>
+            <Button component={Link} to={returnTo} leftSection={icon} mt='xl' variant='light'>
+                {btnLabel}
+            </Button>
 
             <Image
                 src={img}
-                alt="Error image"
-                mt="xl"
-                display="block"
+                alt='Error image'
+                mt='xl'
+                display='block'
                 style={{ borderRadius: '20px' }}
             />
         </Paper>
-    )
-}
+    );
+};
 
 ErrorMessage.defaultProps = {
     title: 'Oops! Something went wrong.',
-    message: 'We\'re sorry for the inconvenience. Please try again later.',
+    message: "We're sorry for the inconvenience. Please try again later.",
     returnTo: '/',
-    icon: <IconHome/>
-}
+    icon: <IconHome />,
+    btnLabel: 'Go Home',
+};

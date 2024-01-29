@@ -1,9 +1,18 @@
 {
   "printWidth": 100,
   "singleQuote": true,
+  "jsxSingleQuote": true,
   "overrides": [
     {
-      "files": ["*.js", "*.cjs", "*.mjs", "*.ts", "*.tsx", "*.cts", "*.mts"],
+      "files": [
+        "*.js",
+        "*.cjs",
+        "*.mjs",
+        "*.ts",
+        "*.tsx",
+        "*.cts",
+        "*.mts"
+      ],
       "options": {
         "tabWidth": 4
       }

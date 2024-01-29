@@ -3,7 +3,6 @@ import * as Matchups from '~/middleware/signals/MatchupsSignals';
 import * as Profiles from '~/middleware/signals/ProfilesSignals';
 import * as Auth from '~/middleware/signals/AuthSignals';
 import { useSignals } from '@preact/signals-react/runtime';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 
 export const Test = () => {
     useSignals();
@@ -13,15 +12,15 @@ export const Test = () => {
     return (
         <Grid grow>
             <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-                <Title>Elements</Title>
-                <ThemeSwitcher />
+                <Title>My Profile</Title>
+                <Code block>{JSON.stringify(Profiles.myProfileSignal, null, 4)}</Code>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-                <Title>CurrentUser</Title>
+                <Title>User</Title>
                 <Code block>{JSON.stringify(currentUser, null, 4)}</Code>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-                <Title>CurrentSession</Title>
+                <Title>Session</Title>
                 <Code block>{JSON.stringify(currentSession, null, 4)}</Code>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>

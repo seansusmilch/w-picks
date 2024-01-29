@@ -13,9 +13,16 @@ export type UserType = {
     };
 };
 
+export type ProfileType = {
+    id: string;
+    created_at: string;
+    display_name: string;
+    avatar_url: string;
+};
+
 export type DBProfileType = {
     id: string;
     created_at: string;
     display_name: string;
     avatar_url: string;
-}
+};

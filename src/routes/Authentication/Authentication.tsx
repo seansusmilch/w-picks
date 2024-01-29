@@ -11,19 +11,16 @@ import {
     Group,
     PaperProps,
     Button,
-    Divider,
-    Checkbox,
     Anchor,
     Stack,
     Alert,
     Flex,
     rem,
 } from '@mantine/core';
-import { IconMoodSadSquint } from '@tabler/icons-react';
-import * as Auth from '~/middleware/signals/AuthSignals';
+import { IconMoodSadSquint, IconCircleCheck } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { AuthError } from '@supabase/supabase-js';
 import { useSignals } from '@preact/signals-react/runtime';
+import { HandleLogin } from '~/middleware/helpers/AuthHelpers';
 
 export function AuthenticationForm(props: PaperProps) {
     useSignals();
@@ -44,47 +41,42 @@ export function AuthenticationForm(props: PaperProps) {
         },
     });
 
-    const errorSignal = useSignal<AuthError | null>(null);
+    const errorSignal = useSignal<{ name: string; message: string } | null>(null);
+    const successSignal = useSignal<{ name: string; message: string } | null>(null);
 
     const handleSubmit = async () => {
         if (type === 'register') {
-            const { user, session, error } = await signUpNewUser(form.values);
+            const { error } = await signUpNewUser(form.values);
             if (error) {
                 console.log('Registration error', error);
                 error.name = 'Sign Up Error';
                 errorSignal.value = error;
                 return;
             }
-            Auth.currentSessionSignal.value = session;
-            Auth.currentUserSignal.value = user;
-            navigate('/Profile');
+
+            if (type === 'register') toggleType();
+            errorSignal.value = null;
+            successSignal.value = {
+                name: 'Sign Up Successful',
+                message: 'Please confirm email address',
+            };
         }
         if (type === 'login') {
-            const { user, session, error } = await logInUser(
-                form.values.email,
-                form.values.password
-            );
+            const { error } = await HandleLogin(form.values.email, form.values.password);
             if (error) {
-                console.log('Login error', error);
-                error.name = 'Login Error';
                 errorSignal.value = error;
                 return;
             }
-
-            console.log('logIn', user, session);
-            Auth.currentSessionSignal.value = session;
-            Auth.currentUserSignal.value = user;
-
             console.log('Logged in!');
-            navigate('/');
+            navigate('/Profile');
         }
     };
 
     return (
-        <Center h="100%" w="100%">
-            <Flex direction="column">
-                <Paper miw='360px' radius="md" p="xl" withBorder {...props}>
-                    <Text size="lg" mb="lg" fw={700}>
+        <Center h='100%' w='100%'>
+            <Flex direction='column'>
+                <Paper miw='360px' radius='md' p='xl' withBorder {...props}>
+                    <Text size='lg' mb='lg' fw={700}>
                         Welcome to W Picks, {type} with
                     </Text>
 
@@ -92,8 +84,8 @@ export function AuthenticationForm(props: PaperProps) {
                         <Stack>
                             {type === 'register' && (
                                 <TextInput
-                                    label="Display Name"
-                                    placeholder="Your name"
+                                    label='Display Name'
+                                    placeholder='Your name'
                                     value={form.values.display_name}
                                     onChange={(event) =>
                                         form.setFieldValue(
@@ -101,26 +93,26 @@ export function AuthenticationForm(props: PaperProps) {
                                             event.currentTarget.value
                                         )
                                     }
-                                    radius="md"
+                                    radius='md'
                                 />
                             )}
 
                             <TextInput
                                 required
-                                label="Email"
-                                placeholder="hello@mantine.dev"
+                                label='Email'
+                                placeholder='hello@mantine.dev'
                                 value={form.values.email}
                                 onChange={(event) =>
                                     form.setFieldValue('email', event.currentTarget.value)
                                 }
                                 error={form.errors.email && 'Invalid email'}
-                                radius="md"
+                                radius='md'
                             />
 
                             <PasswordInput
                                 required
-                                label="Password"
-                                placeholder="Your password"
+                                label='Password'
+                                placeholder='Your password'
                                 value={form.values.password}
                                 onChange={(event) =>
                                     form.setFieldValue('password', event.currentTarget.value)
@@ -129,36 +121,49 @@ export function AuthenticationForm(props: PaperProps) {
                                     form.errors.password &&
                                     'Password should include at least 6 characters'
                                 }
-                                radius="md"
+                                radius='md'
                             />
                         </Stack>
 
-                        <Group justify="space-between" mt="xl">
+                        <Group justify='space-between' mt='xl'>
                             <Anchor
-                                component="button"
-                                type="button"
-                                c="dimmed"
+                                component='button'
+                                type='button'
+                                c='dimmed'
                                 onClick={() => toggleType()}
-                                size="xs"
+                                size='xs'
                             >
                                 {type === 'register'
                                     ? 'Already have an account? Login'
                                     : "Don't have an account? Register"}
                             </Anchor>
-                            <Button type="submit">{upperFirst(type)}</Button>
+                            <Button type='submit'>{upperFirst(type)}</Button>
                         </Group>
                     </form>
                 </Paper>
 
                 {errorSignal.value ? (
                     <Alert
-                        mt="xl"
-                        color="red"
-                        radius="md"
+                        mt='xl'
+                        color='red'
+                        radius='md'
                         title={errorSignal.value.name}
                         icon={<IconMoodSadSquint style={{ width: rem(20), height: rem(20) }} />}
                     >
                         {errorSignal.value.message}
+                    </Alert>
+                ) : (
+                    <></>
+                )}
+                {successSignal.value ? (
+                    <Alert
+                        mt='xl'
+                        color='green'
+                        radius='md'
+                        title={successSignal.value.name}
+                        icon={<IconCircleCheck style={{ width: rem(20), height: rem(20) }} />}
+                    >
+                        {successSignal.value.message}
                     </Alert>
                 ) : (
                     <></>

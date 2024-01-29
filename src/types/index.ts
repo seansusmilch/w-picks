@@ -1,5 +1,5 @@
 export * from './MatchupType';
 export * from './PickType';
-export * from './UserType';
+export * from './ProfileType';
 export * from './ParlayType';
 export * from './TeamType';
