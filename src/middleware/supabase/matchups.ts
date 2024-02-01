@@ -56,11 +56,11 @@ export const getMatchupByDateRange = async (
 };
 
 export const getTodaysMatchups = async (): Promise<MatchupType[]> => {
-    const today = new Date();
-    const todayString = today.toISOString().split('T')[0];
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowString = tomorrow.toISOString().split('T')[0];
+    const dt = new Date();
+    dt.setHours(0, 0, 0, 0);
+    const todayString = dt.toISOString();
+    dt.setHours(23, 59, 59, 999);
+    const tomorrowString = dt.toISOString();
     console.log('lower', todayString, 'upper', tomorrowString);
     return await getMatchupByDateRange(todayString, tomorrowString);
 };
