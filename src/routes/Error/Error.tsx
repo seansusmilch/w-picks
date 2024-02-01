@@ -5,12 +5,9 @@ import { IconHome } from '@tabler/icons-react';
 import { ErrorMessage } from '~/components/error-message/error-message';
 
 export const Error = () => {
-
     return (
         <MantineProvider theme={theme}>
-            <Container size="md" mt="lg">
-                <ErrorMessage />
-            </Container>
+            <ErrorMessage />
         </MantineProvider>
     );
 };
