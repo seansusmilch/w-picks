@@ -29,6 +29,8 @@ import TOR from '@/assets/Logos/TOR.webp';
 import UTA from '@/assets/Logos/UTA.webp';
 import WAS from '@/assets/Logos/WAS.webp';
 import NBA from '@/assets/Logos/NBA.webp';
+import EST from '@/assets/Logos/EST.webp';
+import WST from '@/assets/Logos/WST.webp';
 
 export default {
     ATL,
@@ -62,4 +64,6 @@ export default {
     UTA,
     WAS,
     NBA,
+    EST,
+    WST,
 };

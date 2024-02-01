@@ -1,31 +1,66 @@
 import { supa } from './supabaseClient';
-import { MatchupType } from '~/types';
+import { MatchupType, DBMatchupType, parseDBMatchup } from '~/types';
 
-export const getMatchups = async () => {
+export const getMatchups = async (): Promise<MatchupType[]> => {
     const { data, error } = await supa.from('matchups').select();
     if (error) {
         throw error;
     }
-    return data;
-}
 
-export const getPicks = async () => {
-    const { data, error } = await supa.from('picks').select();
-    if (error) {
-        throw error;
-    }
-    return data;
-}
+    return data.map((matchup: DBMatchupType) => parseDBMatchup(matchup));
+};
 
 export const todaysMatchups = async () => {
     console.log('todaysMatchups not implemented yet, getting all matchups');
     return await getMatchups();
-}
+};
 
-export const getMatchupById = async (id: string) => {
-    const { data, error } = await supa.from('matchups').select().eq('id', id).single();
+export const getMatchupById = async (id: string): Promise<MatchupType> => {
+    const { data, error } = await supa.from('matchups').select().eq('game_id', id).single();
     if (error) {
         throw error;
     }
-    return data;
-}
+    return parseDBMatchup(data);
+};
+
+export const getMatchupByCode = async (code: string): Promise<MatchupType> => {
+    const { data, error } = await supa.from('matchups').select().eq('game_code', code).single();
+    if (error) {
+        throw error;
+    }
+    return parseDBMatchup(data);
+};
+
+/**
+ * Takes two date ISO strings and returns all matchups between\
+ * ex. '2024-02-02T06:00:00.000Z'
+ * @param lower lower limit (inclusive)
+ * @param upper upper limit (inclusive) Date.toISOString() ex. '2021-10-01T00:00:00.000Z'
+ * @returns
+ */
+export const getMatchupByDateRange = async (
+    lower: string,
+    upper: string
+): Promise<MatchupType[]> => {
+    const { data, error } = await supa
+        .from('matchups')
+        .select()
+        .gte('game_time_utc', lower)
+        .lte('game_time_utc', upper);
+
+    if (error) {
+        throw error;
+    }
+
+    return data.map((matchup: DBMatchupType) => parseDBMatchup(matchup));
+};
+
+export const getTodaysMatchups = async (): Promise<MatchupType[]> => {
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0];
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowString = tomorrow.toISOString().split('T')[0];
+    console.log('lower', todayString, 'upper', tomorrowString);
+    return await getMatchupByDateRange(todayString, tomorrowString);
+};

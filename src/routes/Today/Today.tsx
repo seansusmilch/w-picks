@@ -9,18 +9,23 @@ export interface MatchupProps {
 }
 
 export const Today = ({ className }: MatchupProps) => {
-
-    const shownMatchups = todaysMatchupsSignal.value.map((matchup) => 
-    <Card component={Link} to={`/Matchup/${matchup.id}`} key={matchup.id} maw='500px' shadow="sm" padding="sm" radius="md" withBorder>
-        <MatchupInfo matchup={matchup} />
-    </Card>
-        
-    );
+    const shownMatchups = todaysMatchupsSignal.value.map((matchup) => (
+        <Card
+            component={Link}
+            to={`/Matchup/${matchup.game_id}`}
+            key={matchup.game_id}
+            maw='500px'
+            shadow='sm'
+            padding='sm'
+            radius='md'
+            withBorder
+        >
+            <MatchupInfo matchup={matchup} />
+        </Card>
+    ));
 
     return (
-        <Flex
-            direction='column'
-            gap='sm'>
+        <Flex direction='column' gap='sm'>
             {shownMatchups}
         </Flex>
     );
