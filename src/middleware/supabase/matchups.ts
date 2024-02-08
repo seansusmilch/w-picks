@@ -23,6 +23,14 @@ export const getMatchupById = async (id: string): Promise<MatchupType> => {
     return parseDBMatchup(data);
 };
 
+export const getMatchupsByIds = async (ids: number[]): Promise<MatchupType[]> => {
+    const { data, error } = await supa.from('matchups').select().in('game_id', ids);
+    if (error) {
+        throw error;
+    }
+    return data.map((matchup: DBMatchupType) => parseDBMatchup(matchup));
+};
+
 export const getMatchupByCode = async (code: string): Promise<MatchupType> => {
     const { data, error } = await supa.from('matchups').select().eq('game_code', code).single();
     if (error) {
@@ -46,7 +54,8 @@ export const getMatchupByDateRange = async (
         .from('matchups')
         .select()
         .gte('game_time_utc', lower)
-        .lte('game_time_utc', upper);
+        .lte('game_time_utc', upper)
+        .order('game_time_utc', { ascending: true });
 
     if (error) {
         throw error;

@@ -9,16 +9,12 @@ export type TeamLogoProps = {
     size?: number;
 };
 
-export const TeamLogo = ({ className, team='NBA', teamName='NBA', size=100 }: TeamLogoProps) => {
+export const TeamLogo = ({
+    className,
+    team = 'NBA',
+    teamName = 'NBA',
+    size = 100,
+}: TeamLogoProps) => {
     const TeamLogo = Logos[team];
-    return (
-        <span className={classNames(styles.logo, className)}>
-            <img
-                title={`${teamName} logo`}
-                width={size}
-                height={size}
-                src={TeamLogo}
-                />
-        </span>
-    );
+    return <img title={`${teamName} logo`} width={size} height={size} src={TeamLogo} />;
 };

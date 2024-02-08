@@ -2,7 +2,7 @@ import '@/index.css';
 import classNames from 'classnames';
 import styles from './matchup-info.module.scss';
 import { TeamLogo } from 'components/team-logo/team-logo';
-import { Grid, Flex, Text, Title } from '@mantine/core';
+import { Grid, Flex, Text, Title, Tooltip } from '@mantine/core';
 import { MatchupType, Teams } from '~/types';
 
 export interface MatchupInfoProps {
@@ -17,7 +17,6 @@ export const MatchupInfo = ({ className, matchup }: MatchupInfoProps) => {
     let homeTeamName = 'TBD';
     let awayTeamName = 'TBD';
 
-    console.log(matchup.home_team_tricode, matchup.away_team_tricode);
     if (matchup.home_team_tricode) homeTeamName = Teams[matchup.home_team_tricode]?.name;
     if (matchup.away_team_tricode) awayTeamName = Teams[matchup.away_team_tricode]?.name;
 
@@ -38,19 +37,30 @@ export const MatchupInfo = ({ className, matchup }: MatchupInfoProps) => {
             </Grid.Col>
             <Grid.Col span={2}>
                 <Flex direction='column' align='center' justify='center' h='100%'>
-                    <Text size='sm' fw={900}>
-                        {gameTime.toLocaleString('en-US', { weekday: 'short' }).toUpperCase()}
-                    </Text>
-                    <Text size='md' fw={700}>
-                        {gameTime
-                            .toLocaleString('en-US', {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true,
-                            })
-                            .replace(' AM', 'a')
-                            .replace(' PM', 'p')}
-                    </Text>
+                    <Tooltip
+                        label={gameTime.toLocaleString('en-US', {
+                            timeZoneName: 'shortGeneric',
+                        })}
+                        openDelay={500}
+                    >
+                        <div>
+                            <Text size='sm' fw={900} ta='center'>
+                                {gameTime
+                                    .toLocaleString('en-US', { weekday: 'short' })
+                                    .toUpperCase()}
+                            </Text>
+                            <Text size='md' fw={700} ta='center'>
+                                {gameTime
+                                    .toLocaleString('en-US', {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true,
+                                    })
+                                    .replace(' AM', 'a')
+                                    .replace(' PM', 'p')}
+                            </Text>
+                        </div>
+                    </Tooltip>
                 </Flex>
             </Grid.Col>
             <Grid.Col span={5} className={classNames(styles.hometeam)}>

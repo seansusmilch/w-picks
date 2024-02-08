@@ -9,6 +9,14 @@ export const getScoreboards = async (): Promise<ScoreboardType[]> => {
     return data.map((scoreboard: DBScoreboardType) => parseDBScoreboard(scoreboard));
 };
 
+export const getScoreboardsByIds = async (ids: number[]): Promise<ScoreboardType[]> => {
+    const { data, error } = await supa.from('scoreboards').select().in('game_id', ids);
+    if (error) {
+        throw error;
+    }
+    return data.map((scoreboard: DBScoreboardType) => parseDBScoreboard(scoreboard));
+};
+
 export const getScoreboardById = async (id: string): Promise<ScoreboardType> => {
     const { data, error } = await supa.from('scoreboards').select().eq('game_id', id).single();
     if (error) {
@@ -23,4 +31,13 @@ export const getScoreboardByCode = async (code: string): Promise<ScoreboardType>
         throw error;
     }
     return parseDBScoreboard(data);
+};
+
+export const getTodaysScoreboards = async (): Promise<ScoreboardType[]> => {
+    console.log('getTodaysScoreboards called, use getScoreboardsByIds instead');
+    const { data, error } = await supa.from('scoreboards').select().eq('game_status', 2);
+    if (error) {
+        throw error;
+    }
+    return data.map((scoreboard: DBScoreboardType) => parseDBScoreboard(scoreboard));
 };
