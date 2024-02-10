@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import styles from './picks-table.module.scss';
-import {PickType} from '~/types';
-import { PickRow } from './pick-row';
-import { Table } from '@mantine/core';
+import { PickType } from '~/types';
+import { Grid, Stack, Title } from '@mantine/core';
 
 export type PicksTableProps = {
     className?: string;
@@ -10,21 +9,33 @@ export type PicksTableProps = {
 };
 
 export const PicksTable = ({ className, picks }: PicksTableProps) => {
-    const rows = Array(10)
-        .fill(0)
-        .map((_, i) => <PickRow key={i} />);
+    const rows = Array.from(Array(20)).map((_, i) => (
+        <Grid w='100%' key={i}>
+            <Grid.Col span={4}>Name</Grid.Col>
+            <Grid.Col ta='center' span={4}>
+                Pick
+            </Grid.Col>
+            <Grid.Col span={4}>This is pick {i}</Grid.Col>
+        </Grid>
+    ));
+
+    console.log('Picks', rows);
+
     return (
         <>
-            <Table striped highlightOnHover>
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th>Name</Table.Th>
-                        <Table.Th>Pick</Table.Th>
-                        <Table.Th>Comment</Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
+            <Stack w='100%'>
+                <Title order={3}>
+                    <Grid w='100%'>
+                        <Grid.Col span={4}>Name</Grid.Col>
+                        <Grid.Col ta='center' span={4}>
+                            Pick
+                        </Grid.Col>
+                        <Grid.Col span={4}>Comment</Grid.Col>
+                    </Grid>
+                </Title>
+
+                {rows}
+            </Stack>
         </>
     );
 };
