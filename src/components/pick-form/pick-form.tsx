@@ -1,4 +1,4 @@
-import { MatchupType, ScoreboardType, Teams } from '~/types';
+import { MatchupType, PickType, ScoreboardType, Teams } from '~/types';
 import {
     Flex,
     SegmentedControl,
@@ -17,6 +17,12 @@ import { TeamLogo } from '~/components/team-logo/team-logo';
 import { PickHelp } from './pick-help';
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
+import {
+    deletePickHelper,
+    getMyPickByMatchup,
+    upsertPickHelper,
+} from '~/middleware/helpers/PicksHelpers';
+import { currentUserSignal } from '~/middleware/signals/AuthSignals';
 
 export type PickFormProps = {
     className?: string;
@@ -26,7 +32,8 @@ export type PickFormProps = {
 };
 
 const maxCommentLength = 50;
-const errorSignal = signal<string | null>(null);
+const submittingSignal = signal(false);
+const currentPickSignal = signal<PickType | null>(null);
 
 export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
     useSignals();
@@ -34,6 +41,24 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
         console.error('PickForm missing matchup tricode', matchup);
         return <>Error</>;
     }
+
+    useSignalEffect(() => {
+        if (currentUserSignal.value) {
+            getMyPickByMatchup(currentUserSignal.value.id, matchup.game_id)
+                .then((pick: PickType) => {
+                    currentPickSignal.value = pick;
+                    form.setValues({
+                        pick: pick.winner,
+                        comment: pick.comment,
+                    });
+                    console.log('Got pick', pick);
+                })
+                .catch((e) => {
+                    console.error('Error getting pick', e);
+                    currentPickSignal.value = null;
+                });
+        }
+    });
 
     const [opened, { open, close }] = useDisclosure();
     const form = useForm({
@@ -54,8 +79,54 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
     const homeTeamName = Teams[matchup.home_team_tricode].name;
     const awayTeamName = Teams[matchup.away_team_tricode].name;
 
-    const handleFormSubmit = async (vals: any) => {
-        console.log('pick form', vals);
+    const handleFormSubmit = async () => {
+        console.log('Form values', form.values);
+        if (!currentUserSignal.value) {
+            console.error('User not logged in');
+            return;
+        }
+
+        submittingSignal.value = true;
+        if (form.values.pick === 'na') {
+            console.log('Delete pick');
+            await deletePickHelper(currentUserSignal.value.id, matchup.game_id);
+            submittingSignal.value = false;
+            return;
+        }
+
+        if (currentPickSignal.value) {
+            console.log('update pick', form.values);
+            await upsertPickHelper({
+                ...currentPickSignal.value,
+                updated_at: new Date().toISOString(),
+                winner: form.values.pick,
+                comment: form.values.comment,
+            });
+            submittingSignal.value = false;
+            return;
+        }
+
+        console.log('insert pick', form.values);
+        const tstamp = new Date().toISOString();
+        const { error } = await upsertPickHelper({
+            user_id: currentUserSignal.value.id,
+            matchup_id: matchup.game_id,
+            parlay_id: null,
+            created_at: tstamp,
+            updated_at: tstamp,
+            winner: form.values.pick,
+            comment: form.values.comment,
+        });
+        if (error) {
+            console.error('Error upserting pick', error);
+            submittingSignal.value = false;
+            return;
+        }
+        currentPickSignal.value = await getMyPickByMatchup(
+            currentUserSignal.value.id,
+            matchup.game_id
+        );
+        submittingSignal.value = false;
     };
 
     return (
@@ -73,11 +144,12 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
                     )}
 
                     <SegmentedControl
+                        disabled={submittingSignal.value}
                         radius='md'
                         size='xl'
                         data={[
                             {
-                                value: 'away',
+                                value: matchup.away_team_tricode,
                                 label: (
                                     <Center>
                                         <TeamLogo team={matchup.away_team_tricode} size={60} />
@@ -86,7 +158,7 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
                             },
                             { value: 'na', label: <Space h={60} w={0} /> },
                             {
-                                value: 'home',
+                                value: matchup.home_team_tricode,
                                 label: (
                                     <Center>
                                         <TeamLogo team={matchup.home_team_tricode} size={60} />
@@ -94,7 +166,7 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
                                 ),
                             },
                         ]}
-                        defaultValue='na'
+                        value={form.values.pick}
                         onChange={(value) => {
                             form.setFieldValue('pick', value);
                         }}
@@ -102,6 +174,7 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
 
                     <Textarea
                         {...form.getInputProps('comment')}
+                        disabled={submittingSignal.value}
                         radius='md'
                         size='lg'
                         w='100%'
@@ -126,14 +199,12 @@ export const PickForm = ({ className, matchup, showTitle }: PickFormProps) => {
                             <Flex justify='flex-end'>
                                 <Button
                                     type='submit'
+                                    disabled={submittingSignal.value}
                                     radius='md'
                                     size='md'
                                     variant='gradient'
                                     gradient={{ from: 'blue', to: 'grape', deg: 90 }}
                                     w='100%'
-                                    onClick={() => {
-                                        console.log('submit');
-                                    }}
                                 >
                                     Save
                                 </Button>
